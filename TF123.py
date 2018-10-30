@@ -1,3 +1,5 @@
+#using low-level api to build a linear regression model and using gradient descent optimizer to train the model 
+
 import tensorflow as tf
 import numpy as np
 
