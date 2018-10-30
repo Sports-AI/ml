@@ -6,8 +6,6 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-import amath.utils as mutils
-
 print(tf.__version__)
 
 fashion_mnist = keras.datasets.fashion_mnist
@@ -47,11 +45,22 @@ for i in range(25):
     plt.xlabel(class_names[train_labels[i]])
 plt.show()
 
-# hello = tf.constant('Hello, TensorFlow!')
-# sess = tf.Session()
-# print(sess.run(hello))
+model = keras.Sequential([
+    keras.layers.Flatten(input_shape=(28, 28)),
+    keras.layers.Dense(128, activation=tf.nn.relu),
+    keras.layers.Dense(10, activation=tf.nn.softmax)
+])
 
-#print('hello, python!')
+model.compile(optimizer=tf.train.AdamOptimizer(), 
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
 
-print(mutils.add(1,2))
+model.fit(train_images, train_labels, epochs=20)
 
+test_loss, test_acc = model.evaluate(test_images, test_labels)
+
+print('Test accuracy:', test_acc)
+
+predictions = model.predict(test_images)
+
+print(np.argmax(predictions[0]))
